@@ -1,0 +1,22 @@
+deployments:
+  - modules:
+      - path: azure-iac.tf
+        options:
+          terraform_version: 1.2.5
+          args:
+            init:
+              - "-backend-config=resource_group_name=${var backend_config.resources_group_name}"
+              - "-backend-config=storage_account_name=${var backend_config.storage_account_name}"
+              - "-backend-config=container_name=${var backend_config.storage_container_name}"
+              - "-backend-config=key=${env DEPLOY_ENVIRONMENT}.tfstate"
+            plan:
+              - "-parallelism=25"
+            apply:
+              - "-parallelism=25"
+        parameters:
+          environment: ${env DEPLOY_ENVIRONMENT}
+          resource_group: ${var resources_group}
+          deployment: ${var namespace}
+          pat: ${env ADO_PAT}
+    regions:
+      - us-east-1

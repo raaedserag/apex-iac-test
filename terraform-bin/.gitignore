@@ -1,0 +1,5 @@
+build
+downloads
+lib
+terraform_bin.egg-info
+pyproject.toml

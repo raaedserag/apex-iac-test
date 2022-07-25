@@ -1,0 +1,12 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+terraform-bin = {editable = true, path = "./terraform-bin"}
+runway = "2.6.2"
+azure-cli = "2.38.0"
+
+[requires]
+python_version = "3.9"

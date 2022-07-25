@@ -1,0 +1,6 @@
+namespace: "apex"
+resources_group: "ARM"
+backend_config:
+  resources_group_name: "ARM"
+  storage_account_name: "apexiacbackend"
+  storage_container_name:  "apex-iac-tfstate"
