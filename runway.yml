@@ -8,7 +8,7 @@ deployments:
               - "-backend-config=resource_group_name=${var backend_config.resources_group_name}"
               - "-backend-config=storage_account_name=${var backend_config.storage_account_name}"
               - "-backend-config=container_name=${var backend_config.storage_container_name}"
-              - "-backend-config=key=${env DEPLOY_ENVIRONMENT}.tfstate"
+              - "-backend-config=key=${var namespace}-${env DEPLOY_ENVIRONMENT}.tfstate"
             plan:
               - "-parallelism=25"
             apply:
