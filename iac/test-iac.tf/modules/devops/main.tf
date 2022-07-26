@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-data "azuredevops_project" "main_project" {
+data "azuredevops_project" "apexml_project" {
   name = var.ado_project_name
 }
 

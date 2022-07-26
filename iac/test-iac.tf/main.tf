@@ -40,5 +40,7 @@ module "devops" {
   resources_group              = data.azurerm_resource_group.main_resources_group.name
   ado_project_name             = var.ado_project
   github_personal_access_token = var.github_pat
+  github_repository           = var.github_repository
+  github_branch                = var.github_branch
 }
 ############################## Devops Module ##############################

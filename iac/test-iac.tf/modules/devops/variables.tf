@@ -16,3 +16,11 @@ variable "github_personal_access_token" {
   type        = string
   description = "Github Personal Access Token"
 }
+variable "github_repository" {
+  type        = string
+  description = "Github Repository"
+}
+variable "github_branch" {
+  type        = string
+  description = "Github Branch"
+}

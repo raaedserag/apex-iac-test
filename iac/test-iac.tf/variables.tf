@@ -27,3 +27,11 @@ variable "github_pat" {
   description = "Please enter the GitHub repository PAT."
   sensitive   = true
 }
+variable "github_repository" {
+  type        = string
+  description = "Please enter the GitHub repository."
+}
+variable "github_branch" {
+  type        = string
+  description = "Please enter the GitHub branch."
+}
