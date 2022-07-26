@@ -10,13 +10,13 @@ resource "azuredevops_serviceendpoint_github" "apex_repository" {
 resource "azuredevops_build_definition" "example" {
   project_id = data.azuredevops_project.apexml_project.id
   name       = "${local.resourcesPrefix}-build"
-#   path       = "devops"
+  #   path       = "devops"
   repository {
     service_connection_id = azuredevops_serviceendpoint_github.apex_repository.id
     repo_type             = "GitHub"
-    repo_id               = "${var.github_repository}"
-    branch_name           = "${var.github_branch}"
-    yml_path              = "devops/azure-pipelines.yml"
+    repo_id               = var.github_repository
+    branch_name           = var.github_branch
+    yml_path              = var.pipeline_definition_path
   }
 
 }

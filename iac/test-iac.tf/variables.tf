@@ -35,3 +35,7 @@ variable "github_branch" {
   type        = string
   description = "Please enter the GitHub branch."
 }
+variable "pipeline_definition_path" {
+  type        = string
+  description = "Please enter the Azure Pipeline definition path."
+}

@@ -42,5 +42,6 @@ module "devops" {
   github_personal_access_token = var.github_pat
   github_repository           = var.github_repository
   github_branch                = var.github_branch
+  pipeline_definition_path     = var.pipeline_definition_path
 }
 ############################## Devops Module ##############################
