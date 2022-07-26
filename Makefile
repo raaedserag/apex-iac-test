@@ -1,3 +1,7 @@
+#!make
+include .env
+export $(shell sed 's/=.*//' .env)
+
 # Take First argument only
 RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 $(eval $(RUN_ARGS):;@:)
@@ -9,15 +13,12 @@ Environment := "arm"
 endif
 
 initialize:
-	pipenv install
+	cd iac; pipenv install iac
 plan:
-	$(call initialize_environment)
-	DEPLOY_ENVIRONMENT=${Environment} pipenv run runway plan --ci
+	cd iac; DEPLOY_ENVIRONMENT=${Environment} pipenv run runway plan --ci
 
 deploy:
-	$(call initialize_environment)
-	DEPLOY_ENVIRONMENT=${Environment} pipenv run runway deploy --ci
+	cd iac; DEPLOY_ENVIRONMENT=${Environment} pipenv run runway deploy --ci
 
 destroy:
-	$(call initialize_environment)
-	DEPLOY_ENVIRONMENT=${Environment} pipenv run runway destroy --ci
+	cd iac; DEPLOY_ENVIRONMENT=${Environment} pipenv run runway destroy --ci

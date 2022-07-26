@@ -1,0 +1,79 @@
+parameters:
+- name : artifactBuildId
+  displayName: Model Train CI Build ID. Default is 'latest'.
+  type: string
+  default: latest
+
+pr: none
+
+# Trigger this pipeline on model-train pipeline completion
+trigger: none
+
+resources:
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+  pipelines:
+  - pipeline: model-train-ci
+    source: Model-Train-Register-CI # Name of the triggering pipeline
+    trigger: 
+      branches:
+        include:
+        - dev
+
+variables:
+- template: variables-template.yml
+- group: devopsforai-aml-vg
+
+stages:
+- stage: 'Build_AKS'
+  displayName: 'Build AKS'
+  jobs:
+  - job: "Build_AKS_Pipeline"
+    displayName: "Build AKS"
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          # install as package
+          pip install -e .
+          # Invoke the Python building and publishing a training pipeline
+          python -m pipelines.build_inference_cluster
+      displayName: 'Build AKS Inference Cluster'
+- stage: 'Deploy_to_AKS'
+  displayName: 'AKS Deploy'
+  jobs:
+  - job: "Deploy_to_aks_Pipeline"
+    displayName: "Deploy to AKS Pipeline"
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          # install as package
+          pip install -e .
+          # Deploy endpoint to AKS
+          python -m pipelines.deploy_model_aks
+      displayName: 'Deploy to AKS'
+    - task: AzureCLI@1
+      displayName: 'Smoke test'
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          python -m aml_services.utils.smoke_test_scoring_service --type AKS --service "$(AKS_DEPLOYMENT_NAME)"

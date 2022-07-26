@@ -1,3 +1,2 @@
-.runway
-*.bashrc
+*.env
 .vscode

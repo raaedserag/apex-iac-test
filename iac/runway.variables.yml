@@ -1,5 +1,4 @@
-namespace: "apex"
-resources_group: "ARM"
+namespace: "apextest"
 backend_config:
   resources_group_name: "ARM"
   storage_account_name: "apexiacbackend"

@@ -1,0 +1,47 @@
+# Monitor pipeline
+name: 'Performance Monitoring Pipeline'
+resources:
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+
+pr: none
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - aml_services/monitor/monitor_parameters.json
+
+variables:
+- template: variables-template.yml
+- group: devopsforai-aml-vg
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: 'Model_Perf_Mon'
+  displayName: 'Model Performance Monitor'
+  variables:
+    BUILD_URI: '$(SYSTEM.COLLECTIONURI)$(SYSTEM.TEAMPROJECT)/_build/results?buildId=$(BUILD.BUILDID)'
+  jobs:
+  - job: "Model_MON_Pipeline"
+    displayName: "Model MON Pipeline"
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          # install as package
+          pip install -e .
+          # deploy model performance monitoring pipeline 
+          python -m pipelines.build_performance_monitor_pipeline
+      displayName: 'Publish Azure Performance Monitoring Pipeline'
