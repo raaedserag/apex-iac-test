@@ -1,0 +1,4 @@
+# Pipeline template that defines common runtime environment variables.
+variables:
+  - name: RAAED
+    value: "SERAG"
