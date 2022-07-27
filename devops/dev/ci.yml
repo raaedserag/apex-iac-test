@@ -14,7 +14,7 @@ trigger:
   #     - src
 
 variables:
-- template: variables.yml
+- template: devops/dev/variables.yml
 # - group: devopsforai-aml-vg
 
 pool:
