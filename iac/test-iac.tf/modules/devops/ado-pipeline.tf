@@ -1,11 +1,11 @@
-# resource "azuredevops_serviceendpoint_github" "apex_repository" {
-#   project_id            = data.azuredevops_project.apexml_project.id
-#   service_endpoint_name = "${local.resourcesPrefix}-github-serviceendpoint"
+resource "azuredevops_serviceendpoint_github" "apex_repository" {
+  project_id            = data.azuredevops_project.apexml_project.id
+  service_endpoint_name = "${local.resourcesPrefix}-github-serviceendpoint"
 
-#   auth_personal {
-#     personal_access_token = var.github_personal_access_token
-#   }
-# }
+  auth_personal {
+    personal_access_token = var.github_personal_access_token
+  }
+}
 
 resource "azuredevops_build_definition" "example" {
   project_id = data.azuredevops_project.apexml_project.id
