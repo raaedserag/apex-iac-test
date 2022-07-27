@@ -15,7 +15,7 @@ trigger:
 
 variables:
 - template: variables.yml
-# - group: devopsforai-aml-vg
+- group: apextest-infrastructure-parameters
 
 pool:
   vmImage: ubuntu-latest
@@ -33,6 +33,7 @@ stages:
               ls -la
               echo "Hello World"
               echo $RAAED
+              echo $TEST_VARIABLE
               env
   # - stage: "Model_CI"
   #   displayName: "Model CI"
