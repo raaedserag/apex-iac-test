@@ -14,7 +14,7 @@ trigger:
   #     - src
 
 variables:
-- template: devops/dev/variables.yml
+- template: variables.yml
 # - group: devopsforai-aml-vg
 
 pool:
@@ -32,6 +32,7 @@ stages:
               which bash
               ls -la
               echo "Hello World"
+              echo $RAAED
               env
   # - stage: "Model_CI"
   #   displayName: "Model CI"
