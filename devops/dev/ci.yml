@@ -29,12 +29,20 @@ stages:
         timeoutInMinutes: 0
         steps:
           - bash: |
-              which bash
+              echo "JOB1_STEP1"
+              cd src
               ls -la
-              echo "Hello World"
-              echo $RAAED
-              echo $TEST_VARIABLE
-              env
+          - bash: |
+              echo "JOB1_STEP2"
+              ls -la
+      - job: "Model_CI_Job_2"
+        displayName: "Model_CI_Job"
+        timeoutInMinutes: 0
+        steps:
+          - bash: |
+              echo "JOB2_STEP1"
+              ls -la
+
   # - stage: "Model_CI"
   #   displayName: "Model CI"
   #   jobs:
