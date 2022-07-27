@@ -9,9 +9,9 @@ trigger:
   branches:
     include:
       - design
-  paths:
-    include:
-      - src
+  # paths:
+  #   include:
+  #     - src
 
 # variables:
 - template: variables-template.yml
