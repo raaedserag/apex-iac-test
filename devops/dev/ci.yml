@@ -8,10 +8,10 @@ pr: none
 trigger:
   branches:
     include:
-      - design
-  # paths:
-  #   include:
-  #     - src
+      - master
+  paths:
+    include:
+      - src
 
 variables:
 - template: variables.yml
@@ -21,48 +21,48 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: "Model_CI"
-    displayName: "Model_CI"
-    jobs:
-      - job: "Model_CI_Job"
-        displayName: "Model_CI_Job"
-        timeoutInMinutes: 0
-        steps:
-          - bash: |
-              echo "JOB1_STEP1"
-              cd src
-              ls -la
-          - bash: |
-              echo "JOB1_STEP2"
-              ls -la
-      - job: "Model_CI_Job_2"
-        displayName: "Model_CI_Job"
-        timeoutInMinutes: 0
-        steps:
-          - bash: |
-              echo "JOB2_STEP1"
-              ls -la
-
   # - stage: "Model_CI"
-  #   displayName: "Model CI"
+  #   displayName: "Model_CI"
   #   jobs:
-  #     - job: "Model_CI_Pipeline"
-  #       displayName: "Model CI Pipeline"
+  #     - job: "Model_CI_Job"
+  #       displayName: "Model_CI_Job"
   #       timeoutInMinutes: 0
   #       steps:
-  #         - task: AzureCLI@1
-  #           inputs:
-  #             azureSubscription: "$(WORKSPACE_SVC_CONNECTION)"
-  #             scriptLocation: inlineScript
-  #             workingDirectory: $(Build.SourcesDirectory)
-  #             inlineScript: |
-  #               set -e # fail on error
-  #               export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-  #               # install as package
-  #               pip install -e .
-  #               # Invoke the Python building and publishing a training pipeline
-  #               python -m pipelines.build_train_pipeline
-  #           displayName: "Publish Azure Machine Learning Pipeline"
+  #         - bash: |
+  #             echo "JOB1_STEP1"
+  #             cd src
+  #             ls -la
+  #         - bash: |
+  #             echo "JOB1_STEP2"
+  #             ls -la
+  #     - job: "Model_CI_Job_2"
+  #       displayName: "Model_CI_Job"
+  #       timeoutInMinutes: 0
+  #       steps:
+  #         - bash: |
+  #             echo "JOB2_STEP1"
+  #             ls -la
+
+  - stage: "Model_CI"
+    displayName: "Model CI"
+    jobs:
+      - job: "Model_CI_Pipeline"
+        displayName: "Model CI Pipeline"
+        timeoutInMinutes: 0
+        steps:
+          - task: AzureCLI@1
+            inputs:
+              azureSubscription: "$(WORKSPACE_SVC_CONNECTION)"
+              scriptLocation: inlineScript
+              workingDirectory: $(Build.SourcesDirectory)
+              inlineScript: |
+                set -e # fail on error
+                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                # install as package
+                pip install -e .
+                # Invoke the Python building and publishing a training pipeline
+                python -m aml-pipelines.p1_build_publish_automl_pipeline
+            displayName: "Publish Azure Machine Learning Pipeline"
 
   # - stage: "Trigger_AML_Pipeline"
   #   displayName: "Train and evaluate model"
